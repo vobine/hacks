@@ -16,10 +16,14 @@ APPLICATION_NAME = 'Food log hackery'
 class Folog:
     """Food logging."""
 
-    def __init__ (self):
-        pass
+    def __init__ (self,
+                  scopes=SCOPES,
+                  secret=CLIENT_SECRET_FILE,
+                  application=APPLICATION_NAME,
+                  spreadsheetId='1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'):
+        """Set up context for spreadsheet queries."""
 
-    def authorize (self):
+        # Locate files with credentials.
         home_dir = os.path.expanduser('~')
         credential_dir = os.path.join(home_dir, '.credentials')
         if not os.path.exists(credential_dir):
@@ -27,11 +31,12 @@ class Folog:
         credential_path = os.path.join(credential_dir,
                                        'sheets.googleapis.com-python-quickstart.json')
 
+        # Prepare credentials for authorization.
         store = Storage(credential_path)
         credentials = store.get()
         if not credentials or credentials.invalid:
-            flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
-            flow.user_agent = APPLICATION_NAME
+            flow = client.flow_from_clientsecrets(secret, scopes)
+            flow.user_agent = application
             if flags:
                 credentials = tools.run_flow(flow, store, flags)
             else: # Needed only for compatibility with Python 2.6
@@ -39,21 +44,20 @@ class Folog:
             print('Storing credentials to ' + credential_path)
         self.credentials =  credentials
 
-    def discover (self):
-        """Shows basic usage of the Sheets API.
-
-        Creates a Sheets API service object and prints the names and majors of
-        students in a sample spreadsheet:
-        https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-        """
+        # Authorize with OAuth2.
         http = self.credentials.authorize(httplib2.Http())
+
+        # Prepare resource discovery.
         discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
                         'version=v4')
         self.service = discovery.build('sheets', 'v4', http=http,
                                        discoveryServiceUrl=discoveryUrl)
 
+        # Get spreadsheet summary metadata.
+        self.spreadsheets = self.service.spreadsheets().get(
+            spreadsheetId=self.spreadsheetId).execute()
+
     def get (self):
-        spreadsheetId = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
         rangeName = 'Class Data!A2:E'
         result = self.service.spreadsheets().values().get(
             spreadsheetId=spreadsheetId, range=rangeName).execute()
