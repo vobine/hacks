@@ -20,7 +20,7 @@ class Folog:
                   scopes=SCOPES,
                   secret=CLIENT_SECRET_FILE,
                   application=APPLICATION_NAME,
-                  spreadsheetId='1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'):
+                  spreadsheetId='1PqkZpwxPmy9Sxi0jeFWfJtdaRRgIET4rdcWMYSnUaWU'):
         """Set up context for spreadsheet queries."""
 
         # Locate files with credentials.
@@ -54,11 +54,11 @@ class Folog:
                                        discoveryServiceUrl=discoveryUrl)
 
         # Get spreadsheet summary metadata.
-        self.spreadsheets = self.service.spreadsheets().get(
+        self.spreadsheetId = spreadsheetId
+        self.spreadsheet = self.service.spreadsheets().get(
             spreadsheetId=self.spreadsheetId).execute()
 
-    def get (self):
-        rangeName = 'Class Data!A2:E'
+    def get (self, cellRange='Form Responses 1!A19356:D19369'):
         result = self.service.spreadsheets().values().get(
-            spreadsheetId=spreadsheetId, range=rangeName).execute()
-        self.values = result.get('values', [])
+            spreadsheetId=self.spreadsheetId, range=cellRange)
+        return result.execute().get('values', [])
