@@ -1,0 +1,137 @@
+\documentclass[twocolumn]{article}
+
+\usepackage{amsmath}
+
+\usepackage{amsthm}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+\title{Number Theory}
+\author{Haldane Peterson}
+
+\begin{document}
+\maketitle
+
+\section{Why are we here?}
+
+For Dad!
+And my own amusement.
+
+\section{Unbounded Primes}
+
+There is no bound on the number of primes.
+To prove it, we start with a property of factoring that will be
+useful:
+
+\begin{lemma}
+\label{lemma:next-composite}
+If a composite number $c$ has a prime $p$ as a factor, i.e.,
+\begin{equation}
+c = a p
+\label{eqn:cap}
+\end{equation}
+for some integer~$a$, then $c+1$ \emph{cannot} be a multiple of~$p$.
+\end{lemma}
+
+To prove Lemma~\ref{lemma:next-composite}, assume the opposite:  that
+\begin{equation}
+c + 1 = b p
+\label{eqn:c1bp}
+\end{equation}
+for some integer~$b$.
+We can subtract equation~\ref{eqn:cap} from
+equation~\ref{eqn:c1bp} to get:
+\begin{eqnarray*}
+(c + 1) - c & = & b p - a p \\
+1 & = & p (b - a) \\
+\end{eqnarray*}
+So:
+\begin{equation}
+\label{eqn:b-a}
+1 / p = b - a.
+\end{equation}
+
+By definition, $p > 1$, so:
+\begin{equation*}
+0 < 1 / p < 1
+\end{equation*}
+However, the difference $b-a$ is an integer, because~$b$ and~$a$ are
+both integers.
+The upshot is that
+\begin{equation}
+\label{eqn:b-a-neq}
+1 / p \neq b - a.
+\end{equation}
+Equation~\ref{eqn:b-a-neq} directly contradicts
+Equation~\ref{eqn:b-a},
+therefore Equation~\ref{eqn:cap} and Equation~\ref{eqn:c1bp} cannot
+both be true.
+So, by contradiction, Lemma~\ref{lemma:next-composite} must be true.
+
+Now for the main event:
+The number of primes is infinite, or, equivalently:
+\begin{theorem}
+\label{theorem:unbounded-primes}
+For any prime~$p$ there exists a larger prime~$p'$.
+\end{theorem}
+
+We prove this by contradiction.
+Suppose, \textit{contra} Theorem~\ref{theorem:unbounded-primes}, that
+there is a finite number of primes,~$n$.
+Then the largest prime is $p_n$ and the set of all primes is:
+\begin{equation*}
+P = \{ p_1, p_2, \ldots, p_n \},
+\end{equation*}
+
+We can multiply all of the primes to construct a (very
+large) composite number~$c$:
+\begin{equation}
+c = p_1 \cdot p_2 \cdot p_3 \cdots p_{n-1} \cdot p_n.
+\end{equation}
+
+Now consider $c+1$.
+By Lemma~\ref{lemma:next-composite}, none of the prime factors of~$c$
+can be a factor of~$c+1$.
+So one of two cases must hold:
+\begin{itemize}
+\item $c+1$ is itself a prime.
+Since $c+1$ is greater than any $p_i \in P$,
+then
+\begin{equation}
+c+1 \notin P.
+\end{equation}
+That contradicts the assumption that~$P$ is exhaustive.
+\item $c+1$ is composite.
+But Lemma~\ref{lemma:next-composite} established that none of
+the~$p_i$ are factors of $c+1$.
+Therefore the prime factors of $c+1$, whatever they are, must not be
+in~$P$.
+Again, $P$~is not exhaustive, contradicting the assumption.
+\end{itemize}
+
+Therefore no finite~$P$ \emph{can} be exhaustive. The primes are
+infinite. \qed
+
+\subsection{History and Humor}
+
+I adapted this section from memory and from a description on Proof
+Wiki\footnote{proofwiki.org.} of Euclid's Theorem.
+The theorem dates back to at least 300~BCE, as Proposition~20 in
+\textit{Elements}, Book~IX.
+I haven't yet tracked down an attribution for the proof.  Is it from
+Euclid or a later author?  Time to find a copy of \textit{Elements}.
+
+A student at a conference asks: ``Are all odd numbers prime?''
+A mathematician answers, ``3 is prime, 5~is prime, 7~is prime, 9~is
+not prime.  So no.''
+A physicist answers, ``Yes!  3~is prime, 5~is prime, 7~is prime, 9~is
+experimental error, 11~is prime, etc.''
+An engineer answers, ``Yes!  3~is prime, 5~is prime, 7~is prime, 9~is
+prime, \ldots.''
+
+\section{How Many Rationals?}
+
+\section{Irrationals Exist}
+
+
+\end{document}
