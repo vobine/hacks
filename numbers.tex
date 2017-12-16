@@ -6,6 +6,8 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
 
+\newcommand{\PrimeSet}{\mathbf{P}}
+
 \title{Number Theory}
 \author{Haldane Peterson}
 
@@ -67,6 +69,7 @@ Equation~\ref{eqn:b-a},
 therefore Equation~\ref{eqn:cap} and Equation~\ref{eqn:c1bp} cannot
 both be true.
 So, by contradiction, Lemma~\ref{lemma:next-composite} must be true.
+\qed
 
 Now for the main event:
 The number of primes is infinite, or, equivalently:
@@ -80,7 +83,7 @@ Suppose, \textit{contra} Theorem~\ref{theorem:unbounded-primes}, that
 there is a finite number of primes,~$n$.
 Then the largest prime is $p_n$ and the set of all primes is:
 \begin{equation*}
-P = \{ p_1, p_2, \ldots, p_n \},
+\PrimeSet = \{ p_1, p_2, \ldots, p_n \},
 \end{equation*}
 
 We can multiply all of the primes to construct a (very
@@ -95,21 +98,21 @@ can be a factor of~$c+1$.
 So one of two cases must hold:
 \begin{itemize}
 \item $c+1$ is itself a prime.
-Since $c+1$ is greater than any $p_i \in P$,
+Since $c+1$ is greater than any $p_i \in \PrimeSet$,
 then
 \begin{equation}
-c+1 \notin P.
+c+1 \notin \PrimeSet.
 \end{equation}
-That contradicts the assumption that~$P$ is exhaustive.
+That contradicts the assumption that~$\PrimeSet$ is exhaustive.
 \item $c+1$ is composite.
 But Lemma~\ref{lemma:next-composite} established that none of
 the~$p_i$ are factors of $c+1$.
 Therefore the prime factors of $c+1$, whatever they are, must not be
-in~$P$.
-Again, $P$~is not exhaustive, contradicting the assumption.
+in~$\PrimeSet$.
+Again, $\PrimeSet$~is not exhaustive, contradicting the assumption.
 \end{itemize}
 
-Therefore no finite~$P$ \emph{can} be exhaustive. The primes are
+Therefore no finite~$\PrimeSet$ \emph{can} be exhaustive. The primes are
 infinite. \qed
 
 \subsection{History and Humor}
@@ -122,16 +125,16 @@ I haven't yet tracked down an attribution for the proof.  Is it from
 Euclid or a later author?  Time to find a copy of \textit{Elements}.
 
 A student at a conference asks: ``Are all odd numbers prime?''
-A mathematician answers, ``3 is prime, 5~is prime, 7~is prime, 9~is
-not prime.  So no.''
+A mathematician answers, ``3, 5, and~7 are prime, but 9~is
+not.  So no.''
 A physicist answers, ``Yes!  3~is prime, 5~is prime, 7~is prime, 9~is
 experimental error, 11~is prime, etc.''
 An engineer answers, ``Yes!  3~is prime, 5~is prime, 7~is prime, 9~is
 prime, \ldots.''
 
-\section{How Many Rationals?}
+%% \section{How Many Rationals?}
 
-\section{Irrationals Exist}
+%% \section{Irrationals Exist}
 
 
 \end{document}
