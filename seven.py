@@ -7,22 +7,35 @@ from argparse import ArgumentParser
 from itertools import chain
 from random import shuffle
 from sched import scheduler
+from threading import Thread
 import time
+from tkinter import Tk, ttk
+import tkthread
+
+tkthread.patch()
 
 class Exercise:
     """"""
 
-    def __init__(self, exercise, workout):
+    def __init__(self, exercise, workout, window):
         """"""
         self._exercise = exercise
         self._workout = workout
         self._schedule = scheduler(time.time, time.sleep)
+        self._window = window
+
+        self._window.header('Starting workout...')
+
         self._tts = pyttsx3.init()
 
     def say(self, utter):
         """"""
         self._tts.say(str(utter))
         self._tts.runAndWait()
+
+    def show(self, head, count):
+        """"""
+        pass
 
     def run(self):
         """"""
@@ -49,6 +62,32 @@ class Exercise:
 
         self.say('Completed ' + self._exercise)
 
+class Prompt:
+    """"""
+
+    def __init__(self):
+        """"""
+        self._tk_root = Tk()
+        self._tk_frame = ttk.Frame(self._tk_root)
+        self._tk_frame.grid()
+        self._tk_header = ttk.Label(self._tk_frame)
+        self._tk_header.grid(column=0, row=0)
+        self._tk_body = ttk.Label(self._tk_frame)
+        self._tk_body.grid(column=0, row=1)
+
+    def header(self, header):
+        """"""
+        self._tk_header.config(text=header)
+
+    def body(self, body):
+        """"""
+        self._tk_body.config(text=str(body))
+
+    def run(self):
+        """"""
+        self._tk_root.mainloop()
+
+
 def main():
     """"""
     Exercises = [('Abdominal crunch', 'core'),
@@ -64,11 +103,19 @@ def main():
                  ('Triceps dip on chair', 'upper body'),
                  ('Wall sit', 'lower body')]
 
+    workouts = set(ww for ee, ww in Exercises)
+    print('{0:s}'.format(str(workouts)))
     shuffle(Exercises)
+
+    window = Prompt()
+    # def runner(prompt):
+    #     prompt.run()
+
+    # Thread(target=runner, args=[window]).start()
 
     for exercise, workout in Exercises:
         print('{0:s} ({1:s})'.format(exercise, workout))
-        eee = Exercise(exercise, workout)
+        eee = Exercise(exercise, workout, window)
         eee.run()
 
 if '__main__' == __name__:
