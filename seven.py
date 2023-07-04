@@ -117,16 +117,12 @@ def main():
                  ('Step-up onto chair', 'total body'),
                  ('Triceps dip on chair', 'upper body'),
                  ('Wall sit', 'lower body')]
-
-    workouts = set(ww for ee, ww in Exercises)
-    print('{0:s}'.format(str(workouts)))
     shuffle(Exercises)
 
     window = Prompt()
-    ttt = Thread(target=run, args=(Exercises, window))
+    ttt = Thread(target=run, args=(Exercises, window), daemon=True)
     ttt.start()
     window.run()
-    ttt.join()
 
 if '__main__' == __name__:
     main()
