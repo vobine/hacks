@@ -39,16 +39,19 @@ class Exercise:
 
     def run(self):
         """"""
+        tkthread.call_nosync(self._window.header,
+                             'Get ready for {0:s}'.format(self._exercise))
         self.say('Now, rest for 10 seconds.  Next up, ' + self._exercise)
 
         # Count down ten seconds of rest
         now = time.time() + 1
-        for tick in range(1, 11):
+        for tick in range(1, 10):
             self._schedule.enterabs(now + 10 - tick, 1,
                                     self.say, argument=(tick,))
         self._schedule.run()
 
         self.say('Starting ' + self._exercise)
+        tkthread.call_nosync(self._window.header, self._exercise)
 
         # Count down thirty seconds of exercise
         now = time.time() + 1   # Extra second for initialization
@@ -87,6 +90,18 @@ class Prompt:
         """"""
         self._tk_root.mainloop()
 
+    def finish(self):
+        """"""
+        self._tk_root.destroy()
+
+def run(exercises, window):
+    """Run scheduled prompts.
+    This is in a separate function to run in a separate thread."""
+    for exercise, workout in exercises:
+        print('{0:s} ({1:s})'.format(exercise, workout))
+        eee = Exercise(exercise, workout, window)
+        eee.run()
+    window.finish()
 
 def main():
     """"""
@@ -108,15 +123,10 @@ def main():
     shuffle(Exercises)
 
     window = Prompt()
-    # def runner(prompt):
-    #     prompt.run()
-
-    # Thread(target=runner, args=[window]).start()
-
-    for exercise, workout in Exercises:
-        print('{0:s} ({1:s})'.format(exercise, workout))
-        eee = Exercise(exercise, workout, window)
-        eee.run()
+    ttt = Thread(target=run, args=(Exercises, window))
+    ttt.start()
+    window.run()
+    ttt.join()
 
 if '__main__' == __name__:
     main()
