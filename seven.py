@@ -17,14 +17,12 @@ tkthread.patch()
 class Exercise:
     """"""
 
-    def __init__(self, exercise, workout, window):
+    def __init__(self, exercise, workout, window, i, n):
         """"""
-        self._exercise = exercise
+        self._exercise = 'Exercise {0:d} of {1:d}: {2:s}'.format(i, n, exercise)
         self._workout = workout
         self._schedule = scheduler(time.time, time.sleep)
         self._window = window
-
-        self._window.header('Starting workout...')
 
         self._tts = pyttsx3.init()
 
@@ -68,12 +66,13 @@ class Exercise:
 class Prompt:
     """"""
 
-    def __init__(self):
+    def __init__(self, title='Seven-minute workout prompts'):
         """"""
         self._tk_root = Tk()
+        self._tk_root.title(title)
         self._tk_frame = ttk.Frame(self._tk_root)
         self._tk_frame.grid()
-        self._tk_header = ttk.Label(self._tk_frame)
+        self._tk_header = ttk.Label(self._tk_frame, width=100)
         self._tk_header.grid(column=0, row=0)
         self._tk_body = ttk.Label(self._tk_frame)
         self._tk_body.grid(column=0, row=1)
@@ -97,9 +96,9 @@ class Prompt:
 def run(exercises, window):
     """Run scheduled prompts.
     This is in a separate function to run in a separate thread."""
-    for exercise, workout in exercises:
+    for iii, (exercise, workout) in enumerate(exercises):
         print('{0:s} ({1:s})'.format(exercise, workout))
-        eee = Exercise(exercise, workout, window)
+        eee = Exercise(exercise, workout, window, iii + 1, len(exercises))
         eee.run()
     window.finish()
 
