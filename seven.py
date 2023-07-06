@@ -39,12 +39,13 @@ class Exercise:
         """"""
         tkthread.call_nosync(self._window.header,
                              'Get ready for {0:s}'.format(self._exercise))
+
+        start = time.time()
         self.say('Now, rest for 10 seconds.  Next up, ' + self._exercise)
 
         # Count down ten seconds of rest
-        now = time.time() + 1
-        for tick in range(1, 10):
-            self._schedule.enterabs(now + 10 - tick, 1,
+        for tick in range(1, 5):
+            self._schedule.enterabs(start + 10 - tick, 1,
                                     self.say, argument=(tick,))
         self._schedule.run()
 
@@ -52,11 +53,10 @@ class Exercise:
         tkthread.call_nosync(self._window.header, self._exercise)
 
         # Count down thirty seconds of exercise
-        now = time.time() + 1   # Extra second for initialization
-        for tick in chain(range(30, 5, -5), range(5, 0, -1)):
-            self._schedule.enterabs(now + 30 - tick, 1,
+        for tick in chain(range(25, 5, -5), range(5, 0, -1)):
+            self._schedule.enterabs(start + 40 - tick, 1,
                                     self.say, argument=(tick,))
-        self._schedule.enterabs(now + 15, 1,
+        self._schedule.enterabs(start + 25.1, 1,
                                 self.say,
                                 argument=('Half-way with ' + self._exercise,))
         self._schedule.run()
@@ -111,7 +111,7 @@ def run(exercises, window):
 def main():
     """"""
     Exercises = [('Abdominal crunch', 'core'),
-                 ('High knees/running in place', 'total body'),
+                 ('High knees running in place', 'total body'),
                  ('Jumping jacks', 'total body'),
                  ('Lunge', 'lower body'),
                  ('Plank', 'core'),
