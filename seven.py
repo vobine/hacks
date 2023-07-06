@@ -15,10 +15,13 @@ import tkthread
 tkthread.patch()
 
 class Exercise:
-    """"""
+    """Represents current state of an individual exercise,
+    including prompting in progress."""
 
     def __init__(self, exercise, workout, window, i, n):
-        """"""
+        """Takes the name of an exercise, workout area (core, full-body, etc.)
+        a tkinter object for visual prompts, and context in the workout
+        (exercise #i of #n)."""
         self._exercise = 'Exercise {0:d} of {1:d}: {2:s}'.format(i, n, exercise)
         self._workout = workout
         self._schedule = scheduler(time.time, time.sleep)
@@ -27,21 +30,24 @@ class Exercise:
         self._tts = pyttsx3.init()
 
     def say(self, utter):
-        """"""
+        """Blurt a string via TTS."""
         self._tts.say(utter)
         self._tts.runAndWait()
 
     def show(self, widget, value):
-        """"""
+        """Display text in one of the tkinter widgets."""
         tkthread.call_nosync(widget, str(value))
 
     def tick(self, value):
-        """"""
+        """Announce time remaining in countdown."""
         self.show(self._window.body, str(value))
         self.say(str(value))
 
     def run(self):
-        """"""
+        """Prompt for the exercise on a schedule:
+         - 10 seconds rest/prep;
+         - 30 seconds exercising.
+        With a countdown and reminders along the way."""
         self.show(self._window.header,
                   'Get ready for {0:s}'.format(self._exercise))
         self.show(self._window.body, '')
@@ -70,13 +76,13 @@ class Exercise:
         self._schedule.run()
 
         self.show(self._window.body, '')
-        self.say('Completed ' + self._exercise)
+        self.say('Completed.')
 
 class Prompt:
-    """"""
+    """Visual reminder of exercise in progress, including countdown."""
 
     def __init__(self, title='Seven-minute workout prompts'):
-        """"""
+        """Initialize the window, give it a title."""
         self._tk_root = Tk()
         self._tk_root.title(title)
         self._tk_frame = ttk.Frame(self._tk_root)
@@ -93,19 +99,19 @@ class Prompt:
         self._tk_body.grid(column=0, row=1)
 
     def header(self, header):
-        """"""
+        """Set text in the upper Label:  typically exercise name."""
         self._tk_header.config(text=header)
 
     def body(self, body):
-        """"""
+        """Set text in the lower Label:  typically the countdown."""
         self._tk_body.config(text=str(body))
 
     def run(self):
-        """"""
+        """Run the tkinter application."""
         self._tk_root.mainloop()
 
     def finish(self):
-        """"""
+        """Destroy the tkinter application."""
         self._tk_root.destroy()
 
 def run(exercises, window):
@@ -115,10 +121,11 @@ def run(exercises, window):
         print('{0:s} ({1:s})'.format(exercise, workout))
         eee = Exercise(exercise, workout, window, iii + 1, len(exercises))
         eee.run()
+    eee.say('Finished the full workout.')
     window.finish()
 
 def main():
-    """"""
+    """Command-line interface, defaults, and driver."""
     Exercises = [('Abdominal crunch', 'core'),
                  ('High knees running in place', 'total body'),
                  ('Jumping jacks', 'total body'),
