@@ -28,39 +28,48 @@ class Exercise:
 
     def say(self, utter):
         """"""
-        self._tts.say(str(utter))
+        self._tts.say(utter)
         self._tts.runAndWait()
 
-    def show(self, head, count):
+    def show(self, widget, value):
         """"""
-        pass
+        tkthread.call_nosync(widget, str(value))
+
+    def tick(self, value):
+        """"""
+        self.show(self._window.body, str(value))
+        self.say(str(value))
 
     def run(self):
         """"""
-        tkthread.call_nosync(self._window.header,
-                             'Get ready for {0:s}'.format(self._exercise))
+        self.show(self._window.header,
+                  'Get ready for {0:s}'.format(self._exercise))
+        self.show(self._window.body, '')
 
         start = time.time()
+        self.show(self._window.body, 10)
         self.say('Now, rest for 10 seconds.  Next up, ' + self._exercise)
 
         # Count down ten seconds of rest
         for tick in range(1, 5):
             self._schedule.enterabs(start + 10 - tick, 1,
-                                    self.say, argument=(tick,))
+                                    self.tick, argument=(tick,))
         self._schedule.run()
 
+        self.show(self._window.header, self._exercise)
+        self.show(self._window.body, '30')
         self.say('Starting ' + self._exercise)
-        tkthread.call_nosync(self._window.header, self._exercise)
 
         # Count down thirty seconds of exercise
         for tick in chain(range(25, 5, -5), range(5, 0, -1)):
             self._schedule.enterabs(start + 40 - tick, 1,
-                                    self.say, argument=(tick,))
+                                    self.tick, argument=(tick,))
         self._schedule.enterabs(start + 25.1, 1,
                                 self.say,
                                 argument=('Half-way with ' + self._exercise,))
         self._schedule.run()
 
+        self.show(self._window.body, '')
         self.say('Completed ' + self._exercise)
 
 class Prompt:
