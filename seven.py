@@ -72,7 +72,13 @@ class Prompt:
         self._tk_root.title(title)
         self._tk_frame = ttk.Frame(self._tk_root)
         self._tk_frame.grid()
-        self._tk_header = ttk.Label(self._tk_frame, width=100)
+
+        ttk.Style().configure('TLabel',
+                              font='helvetica 60',
+                              width=-50,
+                              justify='center')
+
+        self._tk_header = ttk.Label(self._tk_frame)
         self._tk_header.grid(column=0, row=0)
         self._tk_body = ttk.Label(self._tk_frame)
         self._tk_body.grid(column=0, row=1)
