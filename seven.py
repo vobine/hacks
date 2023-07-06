@@ -1,6 +1,11 @@
 #! /usr/bin/env python3
 
-"""Speech-based electric coach for seven-minute workout."""
+"""Speech-based electric coach for seven-minute workout.
+Sources:
+ - https://www.webmd.com/fitness-exercise/a-z/seven-minute-workout
+ - https://pyttsx3.readthedocs.io/en/latest/index.html
+ - https://pypi.org/project/tkthread/
+plus standard Python library documentation."""
 
 import pyttsx3
 from argparse import ArgumentParser
